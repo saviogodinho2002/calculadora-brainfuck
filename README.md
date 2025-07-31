@@ -78,7 +78,7 @@ echo "2+3" | bf calc.bf      # → 5
 
 (pense a fita do Brainfuck indexada a partir de `0`, ponteiro inicia em `0`)
 
-
+```brainfuck
 , .                            ╮ 1)  lê 1º dígito (ASCII ‘0’–‘9’) em C0
                                ╰ 2)  ecoa o próprio dígito
 
@@ -91,7 +91,7 @@ echo "2+3" | bf calc.bf      # → 5
 <<<< , .                       volta a C3; lê 2º dígito em C3, ecoa
 
 [>+>+<<-]>>>[<<+>>-]           copia 2º dígito: C3 → C4 e C5, zera C3
-
+```
 =========================================================
 Até aqui a fita está assim (valores em decimal):
 
@@ -105,25 +105,26 @@ Até aqui a fita está assim (valores em decimal):
 
 ------------------------------------------------------------------
 ### 1.  Converte **2º dígito** de ASCII → valor e guarda a soma
-
+```
 <<[<++>-]<                     ; ponteiro → C4  
                                ; laço: move 2×d2 de C4 → C3  
                                ; resultado: C3 = 2·d2, C4 = 0  
 >>[<<<+>>>-]                   ; ponteiro → C5  
                                ; laço: move d2 de C5 → C2  
                                ; agora C2 = d1 + d2, C5 = 0
-
+```
 ------------------------------------------------------------------
-### 2.  Constrói a constante **43** em C6
 
+### 2.  Constrói a constante **43** em C6
+```
 +++++                          ; C5 = 5  
 [>+++++++++<-]                 ; 5×(+9 em C6) → C6 = 45  
 >--                            ; C6 = 43  
                                ; (C5 volta a 0)
-
+```
 ------------------------------------------------------------------
 ### 3.  Determina ‘+’ ou ‘-’
-
+```
 [>-<-]                         ; transfere 43 de C6 para C7 (op)  
                                ; C7 = op – 43  → 0 se ‘+’, 2 se ‘-’
 
@@ -136,20 +137,20 @@ Até aqui a fita está assim (valores em decimal):
  <<[<<+>>-]                    ;   move 96 de C4 → C2
  >> >--                        ;   C7 -= 2  → sai do laço
 ]                              ; ==================================================================
-
+```
 Se o operador era ‘-’, **C2 = d1 - d2 + 96**  
 Se era ‘+’, o bloco é pulado, então **C2 = d1 + d2**
 
 ------------------------------------------------------------------
 ### 4.  Subtrai 48 (ASCII ‘0’) para obter ASCII do resultado
-
+```
 >+++++++++[<+++++>-]<+++       ; gera a constante 48 em C7  
 [<<<<<->>>>>-]                 ; transfere −48 de C7 → C2  
                                ; C2 agora guarda **ASCII( N1 ± N2 )**
-
+```
 ------------------------------------------------------------------
 ### 5.  Imprime “=” e o resultado
-
+```
 ++++++[>++++++++++<-]>+.       ; escreve '=' (61)  
 <<<<<<.                        ; escreve C2 (dígito resultado)
 
@@ -159,8 +160,9 @@ A saída final é:
   d1      op      d2
 
 (Num interpretador que **não ecoa** a entrada, você verá apenas `=<dígito>`.)
-
+```
 ------------------------------------------------------------------
+
 ## Resumo do estado final das células
 
 | Célula | Uso final                                    |
